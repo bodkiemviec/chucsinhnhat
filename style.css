@@ -1,16 +1,50 @@
 body {
-    background-color: #000; /* Nền đen huyền bí */
+    background-color: #000;
     color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
-    overflow: hidden;
+}
+
+/* 1. MÀN HÌNH CHỜ THÔNG MINH */
+#rotate-warning {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: #000;
+    color: #ffc0cb;
+    z-index: 9999;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
 }
 
+.phone-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+    animation: rotateAnim 2s infinite;
+}
+
+@keyframes rotateAnim {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(-90deg); }
+    100% { transform: rotate(0deg); }
+}
+
+/* Hiện cảnh báo khi cầm điện thoại dọc */
+@media (orientation: portrait) {
+    #rotate-warning { display: flex; }
+    #content-box { display: none; }
+}
+
+/* 2. NỘI DUNG CHÍNH */
 #content-box {
     width: 100%;
     display: flex;
@@ -18,68 +52,80 @@ body {
     align-items: center;
 }
 
-/* Container chứa ảnh và chữ nằm ngang */
 .container-flex {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 40px; /* Khoảng cách giữa ảnh và chữ */
-    width: 90%;
+    gap: 60px; /* Khoảng cách rộng rãi tinh tế */
+    width: 95%;
 }
 
-/* Hiệu ứng chữ hồng, to và rực rỡ */
+/* 3. CHỮ: Nhỏ, thanh mảnh và giữ màu Icon */
 .fade-in {
     animation: fadeInOut 6s forwards;
-    font-size: 2rem; /* To hơn theo ý bạn */
-    font-weight: 900;
-    color: #ffb6c1; /* Màu hồng phấn sáng */
-    text-shadow: 0 0 20px #ff69b4, 0 0 40px #ff1493, 0 0 60px #ff00ff;
-    line-height: 1;
+    font-size: 1.6rem; /* Nhỏ lại theo ý bạn */
+    font-weight: 300;
+    color: #ffc0cb; /* Màu hồng phấn dịu */
+    line-height: 1.6;
+    max-width: 500px;
+    position: relative;
+    /* Đổ bóng nhẹ để chữ nổi bật nhưng không bị thô */
+    text-shadow: 0 0 15px rgba(255, 105, 180, 0.4);
 }
 
 @keyframes fadeInOut {
-    0% { opacity: 0; transform: translateY(30px) scale(0.8); }
-    15% { opacity: 1; transform: translateY(0) scale(1); }
-    85% { opacity: 1; transform: translateY(0) scale(1); }
-    100% { opacity: 0; transform: translateY(-30px) scale(1.1); }
+    0% { opacity: 0; transform: translateY(15px); }
+    15% { opacity: 1; transform: translateY(0); }
+    85% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-15px); }
 }
 
-/* Định dạng cho 4 ảnh xuất hiện 2 bên */
+/* 4. HIỆU ỨNG TIM BAY RA TỪ CHỮ */
+.text-heart {
+    position: absolute;
+    color: #ff69b4;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 10;
+    animation: heartPop 2s ease-out forwards;
+}
+
+@keyframes heartPop {
+    0% { transform: translate(0, 0) scale(0); opacity: 0; }
+    20% { opacity: 1; scale: 1; }
+    100% { transform: translate(var(--x), var(--y)); opacity: 0; scale: 0.5; }
+}
+
+/* 5. ẢNH 2 BÊN */
 .side-img {
-    width: 200px; /* Độ lớn của ảnh */
-    height: 200px;
-    border-radius: 50%; /* Làm ảnh tròn cho đẹp */
-    border: 5px solid #ff69b4;
-    box-shadow: 0 0 30px #ff1493;
+    width: 140px; /* Nhỏ lại cho cân đối với chữ */
+    height: 140px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 182, 193, 0.4); /* Viền mảnh sang trọng */
+    box-shadow: 0 0 20px rgba(255, 20, 147, 0.3);
     object-fit: cover;
-    opacity: 0; /* Mặc định ẩn */
-    transition: all 1.5s ease-in-out;
-    transform: scale(0.5);
+    opacity: 0;
+    transition: opacity 2s ease-in-out, transform 2s ease-in-out;
+    transform: scale(0.9);
 }
 
-/* Khi JS thêm class này vào, ảnh sẽ hiện lên mượt mà */
 .show-img {
     opacity: 1 !important;
     transform: scale(1) !important;
 }
 
-/* Hiệu ứng trái tim bay (nhiều và dày đặc hơn) */
+/* 6. TIM RƠI NỀN (MỜ HƠN ĐỂ KHÔNG LÀM PHÂN TÂM) */
 .heart {
     position: absolute;
-    color: #ff69b4;
+    color: rgba(255, 192, 203, 0.15); /* Độ mờ thấp cho tinh tế */
     user-select: none;
     pointer-events: none;
-    animation: heartMove 5s linear infinite;
-    z-index: -1; /* Để trái tim bay dưới chữ và ảnh */
+    animation: heartRain 7s linear infinite;
+    z-index: -1;
 }
 
-@keyframes heartMove {
-    0% { 
-        transform: translateY(110vh) rotate(0deg); 
-        opacity: 1; 
-    }
-    100% { 
-        transform: translateY(-10vh) rotate(360deg); 
-        opacity: 0; 
-    }
+@keyframes heartRain {
+    0% { transform: translateY(-10vh) rotate(0); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
 }

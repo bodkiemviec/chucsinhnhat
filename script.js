@@ -26,7 +26,34 @@ const imgLeft = document.getElementById('img-left');
 const imgRight = document.getElementById('img-right');
 let started = false;
 
-// 2. Hàm bắt đầu (Nhạc + Chữ + Tim)
+// 2. Hàm tạo tim nhỏ bay ra từ chữ (Hiệu ứng tinh tế)
+function spawnTextHearts() {
+    if (!started || displayElement.innerText.includes("bấm")) return;
+
+    for(let i = 0; i < 3; i++) {
+        const h = document.createElement('div');
+        h.classList.add('text-heart');
+        h.innerHTML = '❤️';
+        
+        // Hướng bay ngẫu nhiên (tản ra xung quanh)
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 40 + Math.random() * 50; // Khoảng cách bay
+        
+        h.style.setProperty('--x', Math.cos(angle) * dist + 'px');
+        h.style.setProperty('--y', Math.sin(angle) * dist + 'px');
+        
+        // Xuất hiện ở giữa dòng chữ
+        h.style.left = '50%';
+        h.style.top = '50%';
+        
+        displayElement.appendChild(h);
+        
+        // Xóa tim sau khi bay xong
+        setTimeout(() => h.remove(), 2000);
+    }
+}
+
+// 3. Hàm bắt đầu (Nhạc + Chữ + Tim nền)
 function startEverything() {
     if (!started) {
         started = true;
@@ -35,8 +62,8 @@ function startEverything() {
         audio.currentTime = 7;
         audio.play().catch(e => console.log("Cần tương tác để phát nhạc"));
         
-        // Mưa tim bắt đầu ngay
-        setInterval(createHeart, 100);
+        // Mưa tim nền (mờ phía sau)
+        setInterval(createBackgroundHeart, 400);
 
         // Xóa hướng dẫn và chạy lời chúc đầu tiên
         displayElement.innerText = "";
@@ -44,28 +71,25 @@ function startEverything() {
     }
 }
 
-// 3. Hàm hiển thị lời chúc và điều khiển 4 ảnh
+// 4. Hàm hiển thị lời chúc và điều khiển ảnh
 function showNextMessage() {
     if (currentIndex < messages.length) {
         displayElement.classList.remove('fade-in');
 
-        // KIỂM TRA ĐỂ HIỆN 4 ẢNH KHÁC NHAU
+        // Logic hiện ảnh 2 bên
         if (currentIndex === 2) { 
-            // Đợt 1: Trần Hà My
             imgLeft.src = "anh1.jpeg";
             imgRight.src = "anh2.jpeg";
             imgLeft.classList.add('show-img');
             imgRight.classList.add('show-img'); 
         } 
         else if (currentIndex === 6) { 
-            // Đợt 2: Chúc em xinh đẹp...
             imgLeft.src = "anh3.jpeg";
             imgRight.src = "anh4.jpeg";
             imgLeft.classList.add('show-img');
             imgRight.classList.add('show-img');
         } 
         else {
-            // Các câu khác thì ẩn ảnh đi cho tinh tế
             imgLeft.classList.remove('show-img');
             imgRight.classList.remove('show-img');
         }
@@ -73,6 +97,11 @@ function showNextMessage() {
         void displayElement.offsetWidth; 
         displayElement.innerText = messages[currentIndex];
         displayElement.classList.add('fade-in');
+
+        // BẮT ĐẦU HIỆU ỨNG TIM BAY RA TỪ CHỮ
+        // Chạy liên tục trong 4 giây rồi dừng để chuẩn bị cho câu tiếp theo
+        const heartBurst = setInterval(spawnTextHearts, 800);
+        setTimeout(() => clearInterval(heartBurst), 4500);
         
         currentIndex++;
         setTimeout(showNextMessage, 6000); 
@@ -83,22 +112,22 @@ function showNextMessage() {
     }
 }
 
-// 4. Hàm tạo trái tim dày đặc
-function createHeart() {
+// 5. Hàm tạo trái tim rơi nền (Mờ ảo)
+function createBackgroundHeart() {
     const heart = document.createElement('div');
     heart.classList.add('heart');
-    const heartIcons = ['❤️', '💖', '💗', '💓', '🌸', '✨'];
+    const heartIcons = ['❤️', '💖', '💗', '🌸', '✨'];
     heart.innerHTML = heartIcons[Math.floor(Math.random() * heartIcons.length)];
     
     heart.style.left = Math.random() * 100 + 'vw';
-    heart.style.fontSize = (Math.random() * 30 + 20) + 'px'; 
-    heart.style.animationDuration = (Math.random() * 3 + 2) + 's'; 
+    heart.style.fontSize = (Math.random() * 20 + 10) + 'px'; 
+    heart.style.animationDuration = (Math.random() * 4 + 3) + 's'; 
     
     document.body.appendChild(heart);
-    setTimeout(() => { heart.remove(); }, 5000);
+    setTimeout(() => { heart.remove(); }, 6000);
 }
 
-// 5. Lắng nghe click
+// 6. Lắng nghe click để khởi động
 document.addEventListener('click', startEverything);
 
 // Hướng dẫn ban đầu
