@@ -9,12 +9,12 @@ const messages = [
     "Hôm nay là ngày 26/02/2012",
     "Vì đó là ngày thế giới đón chào một thiên thần!",
     "Hôm nay My đã lớn thêm một tuổi",
-    "Chúc em ngày càng xinh đẹp , thuần khiết như 1 thiên thần bé nhỏ",
+    "Chúc em ngày càng xinh đẹp, thuần khiết như 1 thiên thần bé nhỏ",
     "Học tập thật giỏi",
     "Mong mọi ước mơ của My đều trở thành hiện thực",
     "Dù có lúc buồn hay mệt mỏi...",
     "Hãy nhớ luôn có những người yêu thương em :D",
-    "Hãy luôn giữ nụ cười trên em nhé ",
+    "Hãy luôn giữ nụ cười trên môi nhé",
     "Bởi vì nụ cười của em rất đẹp!",
     "Món quà nhỏ này anh dành tặng cho em, My.......",
     "Happy Birthday, Trần Hà My! 🎂🎁✨"
@@ -26,46 +26,40 @@ const imgLeft = document.getElementById('img-left');
 const imgRight = document.getElementById('img-right');
 let started = false;
 
-// 2. Hàm tạo tim nhỏ bay ra từ chữ (Hiệu ứng tinh tế)
+// --- ĐÃ BỎ KIỂM TRA XOAY MÀN HÌNH ---
+
+// 2. Hàm tạo tim nhỏ bay ra từ chữ
 function spawnTextHearts() {
-    if (!started || displayElement.innerText.includes("bấm")) return;
+    if (!started) return;
 
     for(let i = 0; i < 3; i++) {
         const h = document.createElement('div');
         h.classList.add('text-heart');
         h.innerHTML = '❤️';
         
-        // Hướng bay ngẫu nhiên (tản ra xung quanh)
         const angle = Math.random() * Math.PI * 2;
-        const dist = 40 + Math.random() * 50; // Khoảng cách bay
+        const dist = 40 + Math.random() * 50; 
         
         h.style.setProperty('--x', Math.cos(angle) * dist + 'px');
         h.style.setProperty('--y', Math.sin(angle) * dist + 'px');
         
-        // Xuất hiện ở giữa dòng chữ
         h.style.left = '50%';
         h.style.top = '50%';
         
         displayElement.appendChild(h);
-        
-        // Xóa tim sau khi bay xong
         setTimeout(() => h.remove(), 2000);
     }
 }
 
-// 3. Hàm bắt đầu (Nhạc + Chữ + Tim nền)
+// 3. Hàm bắt đầu (Chạy ngay khi My chạm vào bất kỳ đâu)
 function startEverything() {
     if (!started) {
         started = true;
-        
-        // Nhạc nhảy đến giây thứ 7 và phát
-        audio.currentTime = 7;
+        // Chỉnh nhạc bắt đầu từ giây thứ 7 (như code cũ của bạn)
+        audio.currentTime = 7; 
         audio.play().catch(e => console.log("Cần tương tác để phát nhạc"));
         
-        // Mưa tim nền (mờ phía sau)
         setInterval(createBackgroundHeart, 400);
-
-        // Xóa hướng dẫn và chạy lời chúc đầu tiên
         displayElement.innerText = "";
         showNextMessage();
     }
@@ -76,7 +70,7 @@ function showNextMessage() {
     if (currentIndex < messages.length) {
         displayElement.classList.remove('fade-in');
 
-        // Logic hiện ảnh 2 bên
+        // Logic đổi ảnh theo từng câu (giữ nguyên của bạn)
         if (currentIndex === 2) { 
             imgLeft.src = "anh1.jpeg";
             imgRight.src = "anh2.jpeg";
@@ -90,6 +84,7 @@ function showNextMessage() {
             imgRight.classList.add('show-img');
         } 
         else {
+            // Tạm ẩn ảnh ở các câu khác để tạo bất ngờ
             imgLeft.classList.remove('show-img');
             imgRight.classList.remove('show-img');
         }
@@ -98,8 +93,6 @@ function showNextMessage() {
         displayElement.innerText = messages[currentIndex];
         displayElement.classList.add('fade-in');
 
-        // BẮT ĐẦU HIỆU ỨNG TIM BAY RA TỪ CHỮ
-        // Chạy liên tục trong 4 giây rồi dừng để chuẩn bị cho câu tiếp theo
         const heartBurst = setInterval(spawnTextHearts, 800);
         setTimeout(() => clearInterval(heartBurst), 4500);
         
@@ -112,7 +105,7 @@ function showNextMessage() {
     }
 }
 
-// 5. Hàm tạo trái tim rơi nền (Mờ ảo)
+// 5. Hàm tạo trái tim rơi nền
 function createBackgroundHeart() {
     const heart = document.createElement('div');
     heart.classList.add('heart');
@@ -127,9 +120,9 @@ function createBackgroundHeart() {
     setTimeout(() => { heart.remove(); }, 6000);
 }
 
-// 6. Lắng nghe click để khởi động
+// 6. Lắng nghe click/chạm để bắt đầu
 document.addEventListener('click', startEverything);
+document.addEventListener('touchstart', startEverything); // Thêm cho điện thoại mượt hơn
 
-// Hướng dẫn ban đầu
-displayElement.innerText = "Em bấm vào màn hình đi ...";
-displayElement.style.cursor = "pointer";
+// Câu chào đầu tiên
+displayElement.innerText = "Chạm vào màn hình đi My... ❤️";

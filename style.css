@@ -1,7 +1,10 @@
+/* 1. IMPORT FONT (Dùng font Segoe UI như bạn muốn hoặc font viết tay tùy chọn) */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+
 body {
-    background-color: #000;
+    background-color: #000; /* Nền đen huyền bí */
     color: white;
-    font-family: 'Segoe UI', Tahoma, sans-serif;
+    font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0;
     padding: 0;
     overflow: hidden;
@@ -9,39 +12,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-/* 1. MÀN HÌNH CHỜ THÔNG MINH */
-#rotate-warning {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: #000;
-    color: #ffc0cb;
-    z-index: 9999;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     text-align: center;
-}
-
-.phone-icon {
-    font-size: 60px;
-    margin-bottom: 20px;
-    animation: rotateAnim 2s infinite;
-}
-
-@keyframes rotateAnim {
-    0% { transform: rotate(0deg); }
-    50% { transform: rotate(-90deg); }
-    100% { transform: rotate(0deg); }
-}
-
-/* Hiện cảnh báo khi cầm điện thoại dọc */
-@media (orientation: portrait) {
-    #rotate-warning { display: flex; }
-    #content-box { display: none; }
 }
 
 /* 2. NỘI DUNG CHÍNH */
@@ -54,78 +25,99 @@ body {
 
 .container-flex {
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 60px; /* Khoảng cách rộng rãi tinh tế */
+    gap: 40px;
     width: 95%;
+    flex-wrap: wrap; /* Để tự xuống hàng trên điện thoại */
 }
 
-/* 3. CHỮ: Nhỏ, thanh mảnh và giữ màu Icon */
+/* 3. HIỆU ỨNG CHỮ GIỐNG HỆT MẪU BẠN GỬI */
 .fade-in {
-    animation: fadeInOut 6s forwards;
-    font-size: 1.6rem; /* Nhỏ lại theo ý bạn */
-    font-weight: 300;
-    color: #ffc0cb; /* Màu hồng phấn dịu */
-    line-height: 1.6;
-    max-width: 500px;
+    animation: fadeInOut 6s forwards; /* Mỗi câu hiện 6 giây */
+    font-size: 2rem; /* To và rõ */
+    font-weight: bold;
+    color: #fff;
+    /* Hiệu ứng bóng đổ rực sáng hồng (Glow) */
+    text-shadow: 0 0 15px #ff69b4, 0 0 30px #ff1493;
+    line-height: 1.4;
+    max-width: 600px;
     position: relative;
-    /* Đổ bóng nhẹ để chữ nổi bật nhưng không bị thô */
-    text-shadow: 0 0 15px rgba(255, 105, 180, 0.4);
 }
 
 @keyframes fadeInOut {
-    0% { opacity: 0; transform: translateY(15px); }
-    15% { opacity: 1; transform: translateY(0); }
-    85% { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-15px); }
+    0% { opacity: 0; transform: translateY(20px) scale(0.9); }
+    15% { opacity: 1; transform: translateY(0) scale(1); }
+    85% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-20px) scale(1.1); }
 }
 
-/* 4. HIỆU ỨNG TIM BAY RA TỪ CHỮ */
-.text-heart {
+/* 4. ẢNH 2 BÊN (Giữ style tròn sang trọng) */
+.side-img {
+    width: 150px; 
+    height: 150px;
+    border-radius: 50%;
+    border: 2px solid #ff69b4; /* Viền hồng cùng tone chữ */
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 2s ease-in-out, transform 2s ease-in-out;
+}
+
+.show-img {
+    opacity: 1 !important;
+    transform: scale(1.1); /* Hơi phóng to ảnh khi hiện ra */
+}
+
+/* 5. HIỆU ỨNG TRÁI TIM BAY (Từ dưới lên trên như bạn muốn) */
+.heart {
     position: absolute;
     color: #ff69b4;
-    font-size: 12px;
+    font-size: 20px;
+    user-select: none;
     pointer-events: none;
-    z-index: 10;
+    animation: heartMove 5s linear infinite;
+    opacity: 0;
+    z-index: -1;
+}
+
+@keyframes heartMove {
+    0% { transform: translateY(110vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+
+/* 6. TIM NHỎ BAY RA TỪ CHỮ */
+.text-heart {
+    position: absolute;
+    color: #ff1493;
+    font-size: 14px;
+    pointer-events: none;
     animation: heartPop 2s ease-out forwards;
 }
 
 @keyframes heartPop {
     0% { transform: translate(0, 0) scale(0); opacity: 0; }
-    20% { opacity: 1; scale: 1; }
+    20% { opacity: 1; scale: 1.2; }
     100% { transform: translate(var(--x), var(--y)); opacity: 0; scale: 0.5; }
 }
 
-/* 5. ẢNH 2 BÊN */
-.side-img {
-    width: 140px; /* Nhỏ lại cho cân đối với chữ */
-    height: 140px;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 182, 193, 0.4); /* Viền mảnh sang trọng */
-    box-shadow: 0 0 20px rgba(255, 20, 147, 0.3);
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity 2s ease-in-out, transform 2s ease-in-out;
-    transform: scale(0.9);
-}
+/* 7. ĐẶC BIỆT: FIX GIAO DIỆN ĐIỆN THOẠI DỌC */
+#rotate-warning { display: none !important; } /* Bỏ màn hình xoay */
 
-.show-img {
-    opacity: 1 !important;
-    transform: scale(1) !important;
-}
-
-/* 6. TIM RƠI NỀN (MỜ HƠN ĐỂ KHÔNG LÀM PHÂN TÂM) */
-.heart {
-    position: absolute;
-    color: rgba(255, 192, 203, 0.15); /* Độ mờ thấp cho tinh tế */
-    user-select: none;
-    pointer-events: none;
-    animation: heartRain 7s linear infinite;
-    z-index: -1;
-}
-
-@keyframes heartRain {
-    0% { transform: translateY(-10vh) rotate(0); opacity: 0; }
-    10% { opacity: 1; }
-    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+@media (max-width: 768px) {
+    .container-flex {
+        flex-direction: column; /* Xếp dọc */
+        gap: 20px;
+    }
+    .fade-in {
+        font-size: 2rem; /* Giảm nhẹ size trên mobile để không tràn */
+        order: 2;
+    }
+    #img-left { order: 1; }
+    #img-right { order: 3; }
+    .side-img {
+        width: 120px;
+        height: 120px;
+    }
 }
