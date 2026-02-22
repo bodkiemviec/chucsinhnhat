@@ -1,0 +1,85 @@
+body {
+    background-color: #000; /* Nền đen huyền bí */
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    text-align: center;
+}
+
+#content-box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container chứa ảnh và chữ nằm ngang */
+.container-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px; /* Khoảng cách giữa ảnh và chữ */
+    width: 90%;
+}
+
+/* Hiệu ứng chữ hồng, to và rực rỡ */
+.fade-in {
+    animation: fadeInOut 6s forwards;
+    font-size: 2rem; /* To hơn theo ý bạn */
+    font-weight: 900;
+    color: #ffb6c1; /* Màu hồng phấn sáng */
+    text-shadow: 0 0 20px #ff69b4, 0 0 40px #ff1493, 0 0 60px #ff00ff;
+    line-height: 1;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(30px) scale(0.8); }
+    15% { opacity: 1; transform: translateY(0) scale(1); }
+    85% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-30px) scale(1.1); }
+}
+
+/* Định dạng cho 4 ảnh xuất hiện 2 bên */
+.side-img {
+    width: 200px; /* Độ lớn của ảnh */
+    height: 200px;
+    border-radius: 50%; /* Làm ảnh tròn cho đẹp */
+    border: 5px solid #ff69b4;
+    box-shadow: 0 0 30px #ff1493;
+    object-fit: cover;
+    opacity: 0; /* Mặc định ẩn */
+    transition: all 1.5s ease-in-out;
+    transform: scale(0.5);
+}
+
+/* Khi JS thêm class này vào, ảnh sẽ hiện lên mượt mà */
+.show-img {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+}
+
+/* Hiệu ứng trái tim bay (nhiều và dày đặc hơn) */
+.heart {
+    position: absolute;
+    color: #ff69b4;
+    user-select: none;
+    pointer-events: none;
+    animation: heartMove 5s linear infinite;
+    z-index: -1; /* Để trái tim bay dưới chữ và ảnh */
+}
+
+@keyframes heartMove {
+    0% { 
+        transform: translateY(110vh) rotate(0deg); 
+        opacity: 1; 
+    }
+    100% { 
+        transform: translateY(-10vh) rotate(360deg); 
+        opacity: 0; 
+    }
+}
