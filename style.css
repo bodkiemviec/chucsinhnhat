@@ -2,17 +2,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
 
 body {
-    background-color: #000; /* Nền đen huyền bí */
+    background-color: #000;
     color: white;
-    font-family: 'Segoe UI', Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    padding: 0;
-    overflow: hidden;
-    height: 100vh;
+    
+    /* 1. Fix chiều cao trên di động (tránh bị thanh địa chỉ che) */
+    height: 100vh; /* Dự phòng cho trình duyệt cũ */
+    height: 100dvh; 
+    
+    /* 2. Căn giữa chuẩn xác */
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
+    
+    /* 3. Chống tràn và tối ưu vùng an toàn (Safe Area) */
+    overflow: hidden;
+    padding: env(safe-area-inset-top) 15px env(safe-area-inset-bottom) 15px;
+    box-sizing: border-box;
+    
+    /* 4. Khử răng cưa cho chữ trên Mobile */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    
+    /* 5. Ngăn người dùng vô tình kéo trang làm lệch hiệu ứng */
+    touch-action: none; 
 }
 
 /* 2. NỘI DUNG CHÍNH */
@@ -119,5 +134,38 @@ body {
     .side-img {
         width: 120px;
         height: 120px;
+    }
+}
+@media (max-width: 768px) {
+    .container-flex {
+        flex-direction: column; 
+        justify-content: space-around; /* Chia đều khoảng cách theo chiều dọc */
+        height: 90%; /* Giới hạn để không sát mép trên/dưới */
+        gap: 10px;
+    }
+
+    .fade-in {
+        font-size: 1.5rem; /* Giảm size chữ để tránh bị ngắt dòng quá nhiều */
+        max-width: 90vw;   /* Giới hạn chiều ngang chữ */
+        order: 2;
+    }
+
+    .side-img {
+        width: 100px; /* Thu nhỏ ảnh một chút trên mobile */
+        height: 100px;
+    }
+
+    #img-left { order: 1; }
+    #img-right { order: 3; }
+}
+
+/* Fix riêng cho các điện thoại cực nhỏ (iPhone SE, etc) */
+@media (max-height: 600px) {
+    .side-img {
+        width: 80px;
+        height: 80px;
+    }
+    .fade-in {
+        font-size: 1.2rem;
     }
 }
