@@ -32,7 +32,7 @@ function startEverything() {
 
         // KHỞI TẠO NHẠC TẠI ĐÂY (Bí kíp để chạy trên iPhone/Android)
         if (!audio) {
-            audio = new Audio('nhac.mp3');
+            audio = new Audio('Coquette Habit(MP3_70K).mp3'); 
             audio.loop = true;
         }
 
